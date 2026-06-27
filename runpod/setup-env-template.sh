@@ -10,6 +10,10 @@ export DEBIAN_FRONTEND=noninteractive
 
 log() { echo "[setup] $*"; }
 
+# Directory of this script and the bootstrap repo root (this file lives in <repo>/runpod/).
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
 # Single apt-get update for the whole script (start command already ran one,
 # but this script may run much later, so refresh once here).
 log "Updating package lists..."
@@ -186,6 +190,20 @@ set signcolumn=yes
 set updatetime=300
 set encoding=utf-8
 EOF
+
+# ---------------------------------------------------------------------------
+# Global Claude Code config (~/.claude/CLAUDE.md)
+# Copied from the bootstrap repo so every machine shares one source of truth.
+# ---------------------------------------------------------------------------
+log "Installing global CLAUDE.md..."
+if [ -f "$REPO_ROOT/CLAUDE.md" ]; then
+  mkdir -p ~/.claude
+  cp "$REPO_ROOT/CLAUDE.md" ~/.claude/CLAUDE.md \
+    && log "Global CLAUDE.md installed to ~/.claude/CLAUDE.md" \
+    || log "WARN: failed to copy CLAUDE.md"
+else
+  log "WARN: CLAUDE.md not found at $REPO_ROOT/CLAUDE.md, skipping"
+fi
 
 # ---------------------------------------------------------------------------
 # Clone the working repo (parameterized via env vars)

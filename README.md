@@ -18,6 +18,7 @@ start command  ──clones──>  this repo  ──runs──>  setup-env-temp
 |------|---------|
 | `start-command.sh` | Paste contents into the RunPod template's start command field. |
 | `setup-env-template.sh` | Non-blocking environment setup (Node, uv, claude/codex, tmux/vim/fish, repo clone). |
+| `CLAUDE.md` | Global Claude Code instructions; copied to `~/.claude/CLAUDE.md` on every machine by the setup script. |
 
 ## Environment variables
 
